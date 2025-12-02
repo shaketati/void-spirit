@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Void Spirit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'void-black': '#050505',
+                        'void-dark': '#0a0a12',
+                        'void-accent': '#a855f7',
+                        'void-light': '#e2e8f0',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #050505;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .glass-panel {
+            background: rgba(10, 10, 18, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Hide scrollbar for nav */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="text-void-light antialiased selection:bg-void-accent selection:text-white">
+    <div id="canvas-container" class="fixed inset-0 z-0"></div>
+
+    <main class="relative z-10 flex flex-col items-center justify-center min-h-screen pointer-events-none">
+        <div class="text-center space-y-6 p-8 pointer-events-auto">
+            <h1
+                class="text-6xl md:text-8xl font-display font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 animate-pulse-slow">
+                VOID SPIRIT
+            </h1>
+            <p class="text-lg md:text-xl text-void-light/60 max-w-md mx-auto font-light tracking-wide">
+                Embrace the silence of the cosmic abyss.
+            </p>
+            <button id="explore-btn"
+                class="group relative px-8 py-3 bg-white/5 hover:bg-white/10 transition-all duration-500 rounded-full border border-white/10 overflow-hidden">
+                <span
+                    class="relative z-10 text-sm uppercase tracking-widest group-hover:text-white transition-colors">Enter
+                    the Void</span>
+                <div
+                    class="absolute inset-0 bg-void-accent/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                </div>
+            </button>
+        </div>
+    </main>
+
+    <!-- Planet Info Panel -->
+    <div id="planet-info"
+        class="fixed top-1/2 right-8 -translate-y-1/2 w-80 glass-panel p-6 rounded-2xl opacity-0 pointer-events-none transition-opacity duration-500 z-40">
+        <h2 id="info-name"
+            class="text-3xl font-display font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white to-void-light">
+            Planet Name</h2>
+        <p id="info-desc" class="text-sm text-void-light/80 leading-relaxed mb-6 font-light">
+            Description goes here.
+        </p>
+        <div class="space-y-3">
+            <div class="flex justify-between text-xs border-b border-white/10 pb-2">
+                <span class="text-void-light/50 uppercase tracking-wider">Type</span>
+                <span id="info-type" class="font-semibold">Rocky</span>
+            </div>
+            <div class="flex justify-between text-xs border-b border-white/10 pb-2">
+                <span class="text-void-light/50 uppercase tracking-wider">Diameter</span>
+                <span id="info-diameter" class="font-semibold">12,742 km</span>
+            </div>
+            <div class="flex justify-between text-xs border-b border-white/10 pb-2">
+                <span class="text-void-light/50 uppercase tracking-wider">Orbit</span>
+                <span id="info-orbit" class="font-semibold">365 days</span>
+            </div>
+            <div class="flex justify-between text-xs border-b border-white/10 pb-2">
+                <span class="text-void-light/50 uppercase tracking-wider">Temp</span>
+                <span id="info-temp" class="font-semibold">15°C</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation UI -->
+    <nav class="fixed top-0 left-0 w-full z-50 p-6 flex justify-center pointer-events-none">
+        <div
+            class="glass-panel px-6 py-3 rounded-full pointer-events-auto flex space-x-4 overflow-x-auto max-w-[90vw] no-scrollbar">
+            <button
+                class="planet-btn text-xs uppercase tracking-widest hover:text-void-accent transition-colors whitespace-nowrap"
+                data-planet="sun">Sun</button>
+            <button
+                class="planet-btn text-xs uppercase tracking-widest hover:text-void-accent transition-colors whitespace-nowrap"
+                data-planet="mercury">Mercury</button>
+            <button
+                class="planet-btn text-xs uppercase tracking-widest hover:text-void-accent transition-colors whitespace-nowrap"
+                data-planet="venus">Venus</button>
+            <button
+                class="planet-btn text-xs uppercase tracking-widest hover:text-void-accent transition-colors whitespace-nowrap"
+                data-planet="earth">Earth</button>
+            <button
+                class="planet-btn text-xs uppercase tracking-widest hover:text-void-accent transition-colors whitespace-nowrap"
+                data-planet="mars">Mars</button>
+            <button
+                class="planet-btn text-xs uppercase tracking-widest hover:text-void-accent transition-colors whitespace-nowrap"
+                data-planet="jupiter">Jupiter</button>
+            <button
+                class="planet-btn text-xs uppercase tracking-widest hover:text-void-accent transition-colors whitespace-nowrap"
+                data-planet="saturn">Saturn</button>
+            <button
+                class="planet-btn text-xs uppercase tracking-widest hover:text-void-accent transition-colors whitespace-nowrap"
+                data-planet="uranus">Uranus</button>
+            <button
+                class="planet-btn text-xs uppercase tracking-widest hover:text-void-accent transition-colors whitespace-nowrap"
+                data-planet="neptune">Neptune</button>
+        </div>
+    </nav>
+
+    <!-- Global Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="./script.js"></script>
+</body>
+
+</html>
